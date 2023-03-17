@@ -1,8 +1,21 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
+import PropTypes from 'prop-types'
 
 export class News extends Component {
+
+    static defaultProps = {
+        country:'in',
+        pageSize: 10,
+        category:'general'
+    }
+
+    static propTypes = {
+        country: PropTypes.string ,
+        pageSize: PropTypes.number,
+        category: PropTypes.string,
+    }
 
     constructor() {
         super();
@@ -14,14 +27,15 @@ export class News extends Component {
         }
     }
 
+
     async componentDidMount() {
 
         try {
             console.log("cdm render")
             // let url = "https://newsapi.org/v2/everything?q=tesla&from=2023-02-16&sortBy=publishedAt&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=1";
             // let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=1&pageSize=${this.props.pageSize}`;
-           
-            let url = this.props.url + `&page=${this.state.page}` + `&pageSize=${this.props.pageSize}`
+
+            let url = this.props.url + `&country=${this.props.country}` + `&page=${this.state.page}` + `&pageSize=${this.props.pageSize}` + `&category=${this.props.category}`
             console.log(url)
             let parsedJsonData = await fetch(url).then(res => res.json())
             console.log(parsedJsonData);
@@ -41,8 +55,8 @@ export class News extends Component {
         // console.log("prev page")   
         // let url = `https://newsapi.org/v2/everything?q=tesla&from=2023-02-16&sortBy=publishedAt&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=${this.state.page + 1}&pageSize=15`;
         // let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-       
-        let url = this.props.url + `&page=${this.state.page - 1}` + `&pageSize=${this.props.pageSize}`
+
+        let url = this.props.url + `&country=${this.props.country}` + `&page=${this.state.page - 1}` + `&pageSize=${this.props.pageSize}` + `&category=${this.props.category}`
 
         this.setState({ loading: true })
         let parsedJsonData = await fetch(url).then(res => res.json())
@@ -66,8 +80,8 @@ export class News extends Component {
         if (this.state.page + 1 <= Math.ceil(this.state.totalResults / this.props.pageSize)) {
             // let url = `https://newsapi.org/v2/everything?q=tesla&from=2023-02-16&sortBy=publishedAt&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=${this.state.page + 1}&pageSize=15`;
             // let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=8488cba818a44e7c81c45cac2b4a9834&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-           
-            let url = this.props.url + `&page=${this.state.page + 1}` + `&pageSize=${this.props.pageSize}`
+
+            let url = this.props.url + `&country=${this.props.country}` + `&page=${this.state.page + 1}` + `&pageSize=${this.props.pageSize}` + `&category=${this.props.category}`
 
             this.setState({ loading: true })
             let parsedJsonData = await fetch(url).then(res => res.json())

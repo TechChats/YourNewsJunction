@@ -4,20 +4,31 @@ import './App.css';
 import React, { Component } from 'react'
 import Navbar from './components/Navbar';
 import News from './components/News';
+import { Route, Routes } from 'react-router-dom';
 
 
 export default class App extends Component {
 
   // url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=8488cba818a44e7c81c45cac2b4a9834";
 
-  url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=a12aa7b1ebe14779a452d5601d01048b";
-
+  url = "https://newsapi.org/v2/top-headlines?apiKey=a12aa7b1ebe14779a452d5601d01048b";
   render() {
     return (
       <div>
-        <Navbar/>
-        <News pageSize={10} url={this.url}/>
-        
+        <Navbar />
+        <Routes>
+          {/* <Route exact path="/about" element={<About mode={mode}/>} /> */}
+          <Route exact path="/" element={<News pageSize={10} url={this.url} country="in" category="general" />} />
+          <Route exact path="/business" element={<News pageSize={10} url={this.url} country="in" category="business" />} />
+          <Route exact path="/entertainment" element={<News pageSize={10} url={this.url} country="in" category="entertainment" />} />
+          <Route exact path="/general" element={<News pageSize={10} url={this.url} country="in" category="general" />} />
+          <Route exact path="/health" element={<News pageSize={10} url={this.url} country="in" category="health" />} />
+          <Route exact path="/science" element={<News pageSize={10} url={this.url} country="in" category="science" />} />
+          <Route exact path="/sports" element={<News pageSize={10} url={this.url} country="in" category="sports" />} />
+          <Route exact path="/technology" element={<News pageSize={10} url={this.url} country="in" category="technology " />} />
+
+          {/* <News pageSize={10} url={this.url} country="in" category="sports" /> */}
+        </Routes>
       </div>
 
     )
