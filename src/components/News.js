@@ -23,8 +23,11 @@ const News = (props) => {
     const [page, setPage] = useState(0)
     const [totalResults, setTotalResults] = useState(0)
 
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    } 
 
-   const  updateNews = async () =>  {
+    const updateNews = async () => {
         props.setProgressBar(10);
         let url = props.url + `&country=${props.country}` + `&page=${page}` + `&pageSize=${props.pageSize}` + `&category=${props.category}`
         setLoading(true)
@@ -45,11 +48,12 @@ const News = (props) => {
     }
 
     useEffect(() => {
+        document.title = `${capitalizeFirstLetter(props.category)} - YourNewsJunction` 
         updateNews();
     }, [])
-    
 
- 
+
+
 
     // handleNextPage = async () => {
     //     this.setState({ page: this.state.page + 1 });
@@ -67,9 +71,10 @@ const News = (props) => {
 
         // this.setState({ page: this.state.page + 1 });
         // console.log(this.state.page)
-        setPage(page+1)
-        let url = props.url + `&country=${props.country}` + `&page=${page}` + `&pageSize=${props.pageSize}` + `&category=${props.category}`
+        
+        let url = props.url + `&country=${props.country}` + `&page=${page+1}` + `&pageSize=${props.pageSize}` + `&category=${props.category}`
         // this.setState({ loading: true })
+        setPage(page + 1)
         console.log(page)
         let parsedJsonData = await fetch(url).then(res => res.json())
         console.log(parsedJsonData);
@@ -84,36 +89,36 @@ const News = (props) => {
 
     }
 
-    
-        return (
-            <div className="container my-5">
-                {console.log("render")}
-                <h2 className="text-center my-4">YourNewsJunction - Top Headlines</h2>
-                {loading && <Spinner />}
 
-                <InfiniteScroll
-                    dataLength={articles.length}
-                    next={fetchMoreData}
-                    hasMore={articles.length != totalResults}
-                    loader={<Spinner />}
-                >
-                    <div className="container">
-                        <div className="row">
-                            {articles.map((element) => {
-                                // here as we use map() we need to give a unique key in the return (parent element here <div>)
-                                return <div className="col-md-4" key={element.url}>
-                                    <NewsItem title={element.title ? element.title.slice(0, 40) : ""} description={element.description ? element.description.slice(0, 40) : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
-                                </div>
-                            })}
-                        </div>
+    return (
+        <div className="container my-5">
+            {console.log("render")}
+            <h1 className="text-center" style={{marginTop : '90px', marginBottom: '40px'}}>YourNewsJunction - Top Headlines</h1>
+                { loading && <Spinner /> }
+
+    <InfiniteScroll
+        dataLength={articles.length}
+        next={fetchMoreData}
+        hasMore={articles.length != totalResults}
+        loader={<Spinner />}
+    >
+        <div className="container">
+            <div className="row">
+                {articles.map((element) => {
+                    // here as we use map() we need to give a unique key in the return (parent element here <div>)
+                    return <div className="col-md-4" key={element.url}>
+                        <NewsItem title={element.title ? element.title.slice(0, 40) : ""} description={element.description ? element.description.slice(0, 40) : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
                     </div>
-                </InfiniteScroll>
+                })}
+            </div>
+        </div>
+    </InfiniteScroll>
 
-                {/* <div className="container d-flex justify-content-between">
+    {/* <div className="container d-flex justify-content-between">
                     <button disabled={this.state.page <= 1} type="button" className="btn btn-primary" onClick={this.handlePrevPage}>&laquo; Previous</button>
                     <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / props.pageSize)} type="button" className="btn btn-primary" onClick={this.handleNextPage}>Next &raquo; </button>
                 </div> */}
-            </div>
+            </div >
         )
     }
 
