@@ -31,16 +31,22 @@ export class News extends Component {
 
     async updateNews() {
 
+        this.props.setProgressBar(10);
         let url = this.props.url + `&country=${this.props.country}` + `&page=${this.state.page}` + `&pageSize=${this.props.pageSize}` + `&category=${this.props.category}`
         this.setState({ loading: true })
         console.log(this.state.page)
+        
+        this.props.setProgressBar(30);
         let parsedJsonData = await fetch(url).then(res => res.json())
+        
+        this.props.setProgressBar(80);
         console.log(parsedJsonData);
         this.setState({
             articles: parsedJsonData.articles,
             totalResults: parsedJsonData.totalResults,
             loading: false
         })
+        this.props.setProgressBar(100);
 
     }
 
